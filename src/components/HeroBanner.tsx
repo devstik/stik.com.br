@@ -1,26 +1,99 @@
+import { useRef, useEffect, useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const images = [
+  "/img/tumb-blog-01.jpg",
+  "/img/thumb-blog-09-1024x683.jpg",
+  "/img/thumb-blog-17-1.jpg",
+];
+
 export default function HeroBanner() {
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [index, setIndex] = useState(0);
+
+  // Scroll Automático
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % images.length);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Scroll para a imagem atual
+  useEffect(() => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollTo({
+        left: index * carouselRef.current.offsetWidth,
+        behavior: 'smooth',
+      });
+    }
+  }, [index]);
+
+  const prev = () => setIndex((prev) => (prev - 1 + images.length) % images.length);
+  const next = () => setIndex((prev) => (prev + 1) % images.length);
+
   return (
-    <section className="relative bg-gradient-to-r from-[#6a00b0] to-[#af8fc4] text-white">
-      <div className="max-w-7xl mx-auto px-4 py-16 md:py-24">
-        <div className="grid md:grid-cols-2 gap-8 items-center">
-          <div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Nova Coleção
-            </h1>
-            <p className="text-xl mb-6">
-              Lingeries que valorizam sua beleza e conforto
-            </p>
-            <button className="bg-white text-[#6a00b0] px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition">
-              Conferir Coleção
-            </button>
-          </div>
-          <div className="relative h-64 md:h-96">
-            <div className="absolute inset-0 bg-white/10 rounded-lg backdrop-blur-sm flex items-center justify-center">
-              <span className="text-white/50 text-lg">Imagem da Coleção</span>
+    <section className="relative h-[450px] md:h-[600px] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 w-full h-full z-0">
+          <div 
+            ref={carouselRef}
+            className="w-full h-full flex scroll-smooth"
+            style={{
+              scrollSnapType: 'x mandatory',
+              overflow: 'hidden',
+            }}
+          >
+            {images.map((src, i) => (
+              <img
+                key={src}
+                src={src}
+                alt={`Coleção ${i + 1}`}
+                className="w-full h-full object-cover flex-shrink-0 transition-opacity duration-700"
+                style={{
+                  minWidth: "100%",
+                  scrollSnapAlign: 'start',
+                  opacity: index === i ? 1 : 0,
+                  position: 'absolute',
+                  inset: 0,
+                  zIndex: 0,
+                  transition: 'opacity 0.7s ease-in-out',
+                }}
+                />
+            ))}
             </div>
+            
           </div>
-        </div>
-      </div>
+            {/* Setas Laterais */}
+            <button
+              onClick={prev}
+              className="absolute left-1 z-10 bg-white/70 hover:bg-white text-[#435c79] rounded-full p-2 shadow-md"
+              style={{ top: '50%', transform: 'translateY(-50%)' }}
+              aria-label="Anterior"
+            >
+              <ChevronLeft />
+            </button>
+        
+            <button
+              onClick={next}
+              className="absolute right-1 z-10 bg-white/70 hover:bg-white text-[#435c79] rounded-full p-2 shadow-md"
+              style={{ top: '50%', transform: 'translateY(-50%)' }}
+              aria-label="Próximo"
+            >
+              <ChevronRight />
+            </button>
+            {/* Indicadores minimalistas */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+              {images.map((_, i) => (
+                <span
+                  key={i}
+                  className={`h-1 w-8 rounded transition-all duration-300 ${
+                    index === i
+                      ? "bg-[#7DA0CA]"
+                      : "bg-white/60"
+                  }`}
+                />
+              ))}
+            </div>
     </section>
   );
 }

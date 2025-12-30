@@ -3,6 +3,16 @@ import HeroBanner from './components/HeroBanner';
 import ProductSection from './components/ProductSection';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
+import {AnimatedSection} from './components/animations/AnimatedSections';
+import InfiniteCarouselWithForm from './components/InfiniteCarouselWithForm';
+import ProductCategories from './components/ProductCategories';
+import Diferentials from './components/Diferentials';
+import { Routes, Route } from 'react-router-dom';
+import CategoryPage from './components/CategoryPage';
+import ScrollToTop from './components/animations/ScrollToTop';
+
+
+
 
 const newReleases = [
   { id: 1, name: 'Conjunto Sutiã e Calcinha Renda Delicada', price: 89.90, originalPrice: 129.90, image: 'Produto', isNew: true, discount: 31 },
@@ -26,59 +36,42 @@ const bestSellers = [
   { id: 16, name: 'Sutiã Triângulo Ajustável', price: 59.90, image: 'Produto' },
 ];
 
+function HomePage() {
+  // Conteúdo da home
+  return (
+    <>
+      <HeroBanner />
+      <AnimatedSection>
+        <ProductCategories />
+      </AnimatedSection>
+      <AnimatedSection>
+        <ProductSection title="Lançamentos" products={newReleases} />
+      </AnimatedSection>
+      <AnimatedSection>
+        <Diferentials />
+      </AnimatedSection>
+      <AnimatedSection>
+        <ProductSection title="Mais Vendidos" products={bestSellers} />
+      </AnimatedSection>
+      <AnimatedSection>
+        <InfiniteCarouselWithForm />
+      </AnimatedSection>
+    </>
+  );
+}
+
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      <ScrollToTop/>
       <Header />
-      <HeroBanner />
-
-      <ProductSection title="Lançamentos" products={newReleases} />
-
-      <div className="bg-[#6a00b0] py-16">
-        <div className="max-w-7xl mx-auto px-4 text-center text-white">
-          <h2 className="text-3xl font-bold mb-4">Encontre seu Tamanho Ideal</h2>
-          <p className="text-lg mb-6">Use nosso guia de medidas para garantir o ajuste perfeito</p>
-          <button className="bg-white text-[#6a00b0] px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition">
-            Ver Guia de Medidas
-          </button>
-        </div>
-      </div>
-
-      <ProductSection title="Mais Vendidos" products={bestSellers} />
-
-      <div className="bg-gray-100 py-16">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Por Que Escolher Nayane?</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-[#6a00b0] rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-white text-2xl">✓</span>
-              </div>
-              <h3 className="font-semibold text-lg mb-2">Qualidade Premium</h3>
-              <p className="text-gray-600 text-sm">Tecidos nobres e acabamento impecável</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-[#6a00b0] rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-white text-2xl">★</span>
-              </div>
-              <h3 className="font-semibold text-lg mb-2">Conforto Garantido</h3>
-              <p className="text-gray-600 text-sm">Design pensado para seu bem-estar</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-[#6a00b0] rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-white text-2xl">♥</span>
-              </div>
-              <h3 className="font-semibold text-lg mb-2">Estilo Único</h3>
-              <p className="text-gray-600 text-sm">Peças exclusivas que valorizam sua beleza</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/categorias/:categoria" element={<CategoryPage />} />
+      </Routes>
       <Footer />
       <WhatsAppButton />
     </div>
   );
 }
-
 export default App;

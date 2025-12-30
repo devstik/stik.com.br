@@ -13,7 +13,7 @@ export default function ProductCard({ name, price, originalPrice, image, isNew, 
   return (
     <div className="group relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
       {isNew && (
-        <span className="absolute top-2 left-2 bg-[#6a00b0] text-white text-xs px-3 py-1 rounded-full z-10">
+        <span className="absolute top-2 left-2 bg-[#5483B3] text-white text-xs px-3 py-1 rounded-full z-10">
           NOVO
         </span>
       )}
@@ -42,12 +42,12 @@ export default function ProductCard({ name, price, originalPrice, image, isNew, 
               R$ {originalPrice.toFixed(2)}
             </span>
           )}
-          <span className="text-lg font-bold text-[#6a00b0]">
+          <span className="text-lg font-bold text-[#5483B3]">
             R$ {price.toFixed(2)}
           </span>
         </div>
 
-        <button className="w-full bg-[#6a00b0] text-white py-2 rounded-lg font-medium hover:bg-[#8a20d0] transition flex items-center justify-center gap-2">
+        <button className="w-full bg-[#5483B3] text-white py-2 rounded-lg font-medium hover:bg-[#052659] transition flex items-center justify-center gap-2">
           <ShoppingBag className="w-4 h-4" />
           Adicionar
         </button>
